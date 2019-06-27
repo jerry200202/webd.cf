@@ -1,0 +1,8 @@
+(function(){
+
+function _(i) { return document.getElementById(i) }
+
+let d = _('dvdbg');
+d.innerText += '\nwebd.cf';
+
+})()
