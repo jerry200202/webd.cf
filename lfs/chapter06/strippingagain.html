@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      6.79.&nbsp;Stripping Again
+    </title>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/lfs.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({
+google_ad_client: "ca-pub-5586107219790222",
+enable_page_level_ads: true
+});
+</script>
+  </head>
+  <body class="lfs" id="lfs-SVN-20190624">
+    <div class="navheader">
+      <h4>
+        Linux From Scratch - Version SVN-20190624
+      </h4>
+      <h3>
+        Chapter&nbsp;6.&nbsp;Installing Basic System Software
+      </h3>
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="aboutdebug.html" title=
+          "About Debugging Symbols">Prev</a>
+          <p>
+            About Debugging Symbols
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="revisedchroot.html" title=
+          "Cleaning Up">Next</a>
+          <p>
+            Cleaning Up
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version SVN-20190624 ">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="sect1" lang="en" xml:lang="en">
+      <h1 class="sect1">
+        <a id="ch-system-strippingagain" name=
+        "ch-system-strippingagain"></a>6.79. Stripping Again
+      </h1>
+      <p>
+        This section is optional. If the intended user is not a programmer
+        and does not plan to do any debugging on the system software, the
+        system size can be decreased by about 90 MB by removing the debugging
+        symbols from binaries and libraries. This causes no inconvenience
+        other than not being able to debug the software fully anymore.
+      </p>
+      <p>
+        Most people who use the commands mentioned below do not experience
+        any difficulties. However, it is easy to make a typo and render the
+        new system unusable, so before running the <span class=
+        "command"><strong>strip</strong></span> commands, it is a good idea
+        to make a backup of the LFS system in its current state.
+      </p>
+      <p>
+        First place the debugging symbols for selected libraries in separate
+        files. This debugging information is needed if running regression
+        tests that use <a class="ulink" href=
+        "http://www.linuxfromscratch.org/blfs/view/svn//general/valgrind.html">
+        valgrind</a> or <a class="ulink" href=
+        "http://www.linuxfromscratch.org/blfs/view/svn//general/gdb.html">gdb</a>
+        later in BLFS.
+      </p>
+      <pre class="userinput">
+<kbd class=
+"command">save_lib="ld-2.29.so libc-2.29.so libpthread-2.29.so libthread_db-1.0.so"
+
+cd /lib
+
+for LIB in $save_lib; do
+    objcopy --only-keep-debug $LIB $LIB.dbg 
+    strip --strip-unneeded $LIB
+    objcopy --add-gnu-debuglink=$LIB.dbg $LIB 
+done    
+
+save_usrlib="libquadmath.so.0.0.0 libstdc++.so.6.0.26
+             libitm.so.1.0.0 libatomic.so.1.2.0" 
+
+cd /usr/lib
+
+for LIB in $save_usrlib; do
+    objcopy --only-keep-debug $LIB $LIB.dbg
+    strip --strip-unneeded $LIB
+    objcopy --add-gnu-debuglink=$LIB.dbg $LIB
+done
+
+unset LIB save_lib save_usrlib</kbd>
+</pre>
+      <p>
+        Before performing the stripping, take special care to ensure that
+        none of the binaries that are about to be stripped are running:
+      </p>
+      <pre class="userinput">
+<kbd class="command">exec /tools/bin/bash</kbd>
+</pre>
+      <p>
+        Now the binaries and libraries can be safely stripped:
+      </p>
+      <pre class="userinput">
+<kbd class="command">/tools/bin/find /usr/lib -type f -name \*.a \
+   -exec /tools/bin/strip --strip-debug {} ';'
+
+/tools/bin/find /lib /usr/lib -type f \( -name \*.so* -a ! -name \*dbg \) \
+   -exec /tools/bin/strip --strip-unneeded {} ';'
+
+/tools/bin/find /{bin,sbin} /usr/{bin,sbin,libexec} -type f \
+    -exec /tools/bin/strip --strip-all {} ';'</kbd>
+</pre>
+      <p>
+        A large number of files will be reported as having their file format
+        not recognized. These warnings can be safely ignored. These warnings
+        indicate that those files are scripts instead of binaries.
+      </p>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="aboutdebug.html" title=
+          "About Debugging Symbols">Prev</a>
+          <p>
+            About Debugging Symbols
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="revisedchroot.html" title=
+          "Cleaning Up">Next</a>
+          <p>
+            Cleaning Up
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version SVN-20190624 ">Home</a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>
