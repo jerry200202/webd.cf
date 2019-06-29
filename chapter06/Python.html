@@ -1,0 +1,361 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      6.51.&nbsp;Python-3.7.3
+    </title>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/lfs.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({
+google_ad_client: "ca-pub-5586107219790222",
+enable_page_level_ads: true
+});
+</script>
+  </head>
+  <body class="lfs" id="lfs-SVN-20190624">
+    <div class="navheader">
+      <h4>
+        Linux From Scratch - Version SVN-20190624
+      </h4>
+      <h3>
+        Chapter&nbsp;6.&nbsp;Installing Basic System Software
+      </h3>
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="openssl.html" title=
+          "OpenSSL-1.1.1c">Prev</a>
+          <p>
+            OpenSSL-1.1.1c
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="ninja.html" title="Ninja-1.9.0">Next</a>
+          <p>
+            Ninja-1.9.0
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version SVN-20190624 ">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <h1 class="sect1">
+        <a id="ch-system-Python" name="ch-system-Python"></a>6.51.
+        Python-3.7.3
+      </h1>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Python 3 package contains the Python development environment.
+          It is useful for object-oriented programming, writing scripts,
+          prototyping large programs or developing entire applications.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong class="segtitle">Approximate build time:</strong>
+              <span class="segbody">1.0 SBU</span>
+            </div>
+            <div class="seg">
+              <strong class="segtitle">Required disk space:</strong>
+              <span class="segbody">392 MB</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <h2 class="sect2">
+          6.51.1. Installation of Python 3
+        </h2>
+        <p>
+          Prepare Python for compilation:
+        </p>
+        <pre class="userinput">
+<kbd class="command">./configure --prefix=/usr       \
+            --enable-shared     \
+            --with-system-expat \
+            --with-system-ffi   \
+            --with-ensurepip=yes</kbd>
+</pre>
+        <div class="variablelist">
+          <p class="title">
+            <strong>The meaning of the configure options:</strong>
+          </p>
+          <dl class="variablelist">
+            <dt>
+              <span class="term"><em class=
+              "parameter"><code>--with-system-expat</code></em></span>
+            </dt>
+            <dd>
+              <p>
+                This switch enables linking against system version of
+                <span class="application">Expat</span>.
+              </p>
+            </dd>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><code>--with-system-ffi</code></em></span>
+            </dt>
+            <dd>
+              <p>
+                This switch enables linking against system version of
+                <span class="application">libffi</span>.
+              </p>
+            </dd>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><code>--with-ensurepip=yes</code></em></span>
+            </dt>
+            <dd>
+              <p>
+                This switch enables building <span class=
+                "command"><strong>pip</strong></span> and <span class=
+                "command"><strong>setuptools</strong></span> packaging
+                programs.
+              </p>
+            </dd>
+          </dl>
+        </div>
+        <p>
+          Compile the package:
+        </p>
+        <pre class="userinput">
+<kbd class="command">make</kbd>
+</pre>
+        <p>
+          The test suite requires TK and and X Windows session and cannot be
+          run until Python 3 is reinstalled in BLFS.
+        </p>
+        <p>
+          Install the package:
+        </p>
+        <pre class="userinput">
+<kbd class="command">make install
+chmod -v 755 /usr/lib/libpython3.7m.so
+chmod -v 755 /usr/lib/libpython3.so
+ln -sfv pip3.7 /usr/bin/pip3</kbd>
+</pre>
+        <div class="variablelist">
+          <p class="title">
+            <strong>The meaning of the install commands:</strong>
+          </p>
+          <dl class="variablelist">
+            <dt>
+              <span class="term"><span class="command"><strong>chmod -v 755
+              /usr/lib/libpython3.{7m.,}so</strong></span></span>
+            </dt>
+            <dd>
+              <p>
+                Fix permissions for libraries to be consistent with other
+                libraries.
+              </p>
+            </dd>
+          </dl>
+        </div>
+        <p>
+          If desired, install the preformatted documentation:
+        </p>
+        <pre class="userinput">
+<kbd class="command">install -v -dm755 /usr/share/doc/python-3.7.3/html 
+
+tar --strip-components=1  \
+    --no-same-owner       \
+    --no-same-permissions \
+    -C /usr/share/doc/python-3.7.3/html \
+    -xvf ../python-3.7.3-docs-html.tar.bz2</kbd>
+</pre>
+        <div class="variablelist">
+          <p class="title">
+            <strong>The meaning of the documentation install
+            commands:</strong>
+          </p>
+          <dl class="variablelist">
+            <dt>
+              <span class="term"><code class="option">--no-same-owner</code>
+              and --no-same-permissions</span>
+            </dt>
+            <dd>
+              <p>
+                Ensure the installed files have the correct ownership and
+                permissions. Without these options, using <span class=
+                "application">tar</span> will install the package files with
+                the upstream creator's values.
+              </p>
+            </dd>
+          </dl>
+        </div>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <h2 class="sect2">
+          <a id="contents-python" name="contents-python"></a>6.51.2. Contents
+          of Python 3
+        </h2>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong class="segtitle">Installed Programs:</strong>
+              <span class="segbody">2to3, idle3, pip3, pydoc3, python3,
+              python3-config, and pyvenv</span>
+            </div>
+            <div class="seg">
+              <strong class="segtitle">Installed Library:</strong>
+              <span class="segbody">libpython3.7m.so and libpython3.so</span>
+            </div>
+            <div class="seg">
+              <strong class="segtitle">Installed Directories:</strong>
+              <span class="segbody">/usr/include/python3.7m, /usr/lib/python3
+              and /usr/share/doc/python-3.7.3</span>
+            </div>
+          </div>
+        </div>
+        <div class="variablelist">
+          <h3>
+            Short Descriptions
+          </h3>
+          <table border="0" class="variablelist">
+            <colgroup>
+              <col align="left" valign="top" />
+              <col />
+            </colgroup>
+            <tbody>
+              <tr>
+                <td>
+                  <p>
+                    <a id="python-2to3" name="python-2to3"></a><span class=
+                    "term"><span class=
+                    "command"><strong>2to3</strong></span></span>
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    is a <span class="application">Python</span> program that
+                    reads <span class="application">Python 2.x</span> source
+                    code and applies a series of fixes to transform it into
+                    valid <span class="application">Python 3.x</span> code.
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>
+                    <a id="idle3" name="idle3"></a><span class=
+                    "term"><span class=
+                    "command"><strong>idle3</strong></span></span>
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    is a wrapper script that opens a <span class=
+                    "application">Python</span> aware GUI editor. For this
+                    script to run, you must have installed <span class=
+                    "application">Tk</span> before Python so that the Tkinter
+                    Python module is built.
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>
+                    <a id="pip3" name="pip3"></a><span class=
+                    "term"><span class=
+                    "command"><strong>pip3</strong></span></span>
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    The package installer for Python. You can use pip to
+                    install packages from Python Package Index and other
+                    indexes.
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>
+                    <a id="pydoc3" name="pydoc3"></a><span class=
+                    "term"><span class=
+                    "command"><strong>pydoc3</strong></span></span>
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    is the <span class="application">Python</span>
+                    documentation tool.
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>
+                    <a id="python3" name="python3"></a><span class=
+                    "term"><span class=
+                    "command"><strong>python3</strong></span></span>
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    is an interpreted, interactive, object-oriented
+                    programming language.
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>
+                    <a id="pyvenv" name="pyvenv"></a><span class=
+                    "term"><span class=
+                    "command"><strong>pyvenv</strong></span></span>
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    creates virtual <span class="application">Python</span>
+                    environments in one or more target directories.
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="openssl.html" title=
+          "OpenSSL-1.1.1c">Prev</a>
+          <p>
+            OpenSSL-1.1.1c
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="ninja.html" title="Ninja-1.9.0">Next</a>
+          <p>
+            Ninja-1.9.0
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version SVN-20190624 ">Home</a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>
