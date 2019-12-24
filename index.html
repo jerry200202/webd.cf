@@ -1,6 +1,97 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=yes">
+<title>Tiny webd</title>
+</head>
+<body>
 <pre>
-Website for tiny webd will be here.
-For now, use below URLs instead.
- http://1e18.cnt2.cf:5152/#/latest/
- http://e8c2.cnt2.cf:5156/#/latest/
+webd 网盘介绍：
+  轻量级(self-hosted)自建网盘软件
+  程序仅 60 ~ 90 KB，含 server 端，无其它依赖，速度快资源占用低
+  纯便携软件，解压即用
+  支持 Windows、Linux、OpenWrt、Armbian
+  界面简洁易用，无繁琐设置，支持移动设备
+
+下载地址
+  <a href='https://webd.cf/latest/'>https://webd.cf/latest/</a>
+  <a href='http://1e18.cnt2.cf:5152/#/latest/'>http://1e18.cnt2.cf:5152/#/latest/</a>
+  <a href='http://e8c2.cnt2.cf:5156/#/latest/'>http://e8c2.cnt2.cf:5156/#/latest/</a>
+  后两个还是演示地址, 用户名和密码均为 abc
+  另一个权限更少的账号用户名和密码是 abcd
+
+安装：
+  从上述网址下载 webd-win32.7z 解压到合适位置，进入目录双击运行 tools.cmd
+  依提示添加快捷方式并创建自动启动即完成安装。
+
+配置：
+  用记事本打开 webd.conf 参考后续说明修改配置，修改后需要重启以便生效。
+
+启动和使用：
+  双击桌面 webd 图标启动，或重启后自动启动。
+  双击托盘图标会调用浏览器打开网盘，点右上角二维码图标可生成二维码供移动设备使用。
+  网盘内的 mp4 等文件可用手机浏览器直接播放，不支持的电影可复制链接到其它播放器观看。
+
+配置文件：
+  webd 启动时会在当前目录和 /etc 下查找并加载 webd.conf 文件。
+  编辑 webd.conf 去掉行首的 # 可让改行配置生效。
+  含有空格的路径需用英文双引号包起来。
+
+  Webd.Root 指定网盘文件的路径
+  Webd.Listen 监听端口或特定的地址，支持多个，可配置成 [::]:9212 来同时监听 IPv6 和 IPv4
+  Webd.Hide 隐藏托盘图标, 无参数，该项仅支持 Windows
+  Webd.User 设置用户的权限、用户名和密码，支持两个用户，但使用同一目录
+    示例 Webd.User rlum user1 pass1 表示设置 user1 的密码为 pass1 ，具有 r、l、u、m 四种权限。
+    其中 r 表示访问文件，l 表示获取文件列表，u 表示上传文件，m 表示删除或移动文件。
+    可对用户配置单个或多个权限，任意组合，达成十分灵活的配置。
+  Webd.Guest 设置无需登录的访客权限，参考上面的权限组合，亦可设置成 0 让其不具有任何权限。
+  Webd.Browser 指定浏览器路径，双击托盘图标无法弹出界面时可填入浏览器具体路径。
+
+
+Linux、OpenWrt、Armbian 等平台上安装 webd
+  
+  webd-linux-x86_64.tar.gz 用于普通 x86_64 linux 发行版
+  webd-linux-aarch64.tar.gz 用于 64 位 arm 平台(比如刷了 Armbian 的 N1 盒子)
+  webd-linux-arm.tar.gz webd-linux-armv8l.tar.gz 用于 arm 平台(可在某些 Android 手机里运行)
+  webd-openwrt-x86_64.tar.gz 用于安装了 OpenWrt 的 x86_64 硬件
+
+  webd-openwrt-XXXXX.tar.gz 适用于不同硬件的 OpenWrt 路由器
+
+  比如 K2P OpenWrt 固件位于: https://downloads.openwrt.org/snapshots/targets/ramips/mt7621/
+  那么它应当使用 webd-openwrt-mt7621.tar.gz 安装包
+  
+  ar71xx ath79 固件共用 webd-openwrt-ar71xx.tar.gz 安装包
+  mt7621 mt76x8 固件共用 webd-openwrt-mt7621.tar.gz 安装包
+
+  # 以 mt7621 设备为例，可通过如下命令安装 webd
+  # 首先设定安装包变量
+  pkg=webd-openwrt-mt7621.tar.gz
+  cd /tmp
+  wget http://webd.cf/latest/${pkg}
+  tar -xzvf ${pkg}
+  cp -fv webd/webd /usr/bin/
+  cp -fv webd/webd.conf /etc/
+  rm -rf /tmp/webd /tmp/${pkg} # 删除无用的残留文件
+  # 假设要把硬盘挂载目录 /mnt/sda1 当作网盘目录
+  mkdir -pv mkdir -p /mnt/sda1/.Trash # 创建回收站文件夹，否则不能删除文件
+
+  # 根据前面 [配置文件] 环节的说明编辑 /etc/webd.conf
+  # 设置 Webd.Root 为 /mnt/sda1 以及设置用户名密码权限等
+
+  # 添加开机脚本, 注意不要漏掉引号
+  echo "/usr/bin/webd &>/dev/null &" >> /etc/rc.local
+
+  # 还可以不用配置文件而是用命令行参数方式添加开机脚本
+  echo "/usr/bin/webd -w /mnt/sda1 -u rlum:用户名:密码 -u rl:用户名2:密码2 &>/dev/null &" >> /etc/rc.local
+
+  # 重启路由器生效
+  reboot
+
+  # 局域网内访问 http://路由器IP:9212 即可使用。
+
+by zhngq2312@gmail.com
 </pre>
+</body>
+</html>
+
