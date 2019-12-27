@@ -65,6 +65,15 @@ webd 网盘介绍：
   Webd.Guest 设置无需登录的访客权限，参考上面的权限组合；设置成 0 表示禁用访客。
   Webd.Browser 用于指定自定义的浏览器路径；该项还能解决双击托盘图标无法弹出界面的问题。
 
+命令行参数对应的配置项:
+  -c 指定配置文件, 不再使用默认路径的
+  -h Webd.Hide
+  -B Webd.Browser
+  -l Webd.Listen 可指定多个
+  -w Webd.Root
+  -g Webd.Guest
+  -u 类似 Webd.User, 需把空格用冒号替代, 类似 -u rlum:user1:pass1
+     配置文件和命令行参数一共能设置两个用户
 
 Linux、OpenWrt、Armbian 等平台上安装 webd
   
