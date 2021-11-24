@@ -77,10 +77,10 @@ webd 网盘介绍：
 Linux、OpenWrt、Armbian 等平台上安装 webd
   
   webd-linux-x86_64.tar.gz 用于普通 x86_64 linux 发行版
-  webd-linux-aarch64.tar.gz 用于 64 位 arm 平台(比如刷了 Armbian 的 N1 盒子)
-  webd-linux-arm.tar.gz webd-linux-armv8l.tar.gz 用于 arm 平台(可在某些 Android 手机里运行)
-  webd-openwrt-x86_64.tar.gz 用于安装了 OpenWrt 的 x86_64 硬件
-
+  webd-linux-aarch64.tar.gz webd-linux-armv7.tar.gz 使用于 arm linux 平台
+  webd-openwrt-x86_64.tar.gz 用于安装了 OpenWrt 的普通 PC 
+  webd-android-*** 用于通过使用 adb 命令在 android 设备上运行
+  webd-linux-mipsel-uclibc.tar.gz 适用于 Padavan 等固件
   webd-openwrt-XXXXX.tar.gz 适用于不同硬件的 OpenWrt 路由器
 
   比如 K2P OpenWrt 固件位于: https://downloads.openwrt.org/snapshots/targets/ramips/mt7621/
@@ -90,10 +90,9 @@ Linux、OpenWrt、Armbian 等平台上安装 webd
   mt7621 mt76x8 固件共用 webd-openwrt-mt7621.tar.gz 安装包
 
   # 以 mt7621 设备为例，可通过如下命令安装 webd
-  # 首先设定安装包变量
-  pkg=webd-openwrt-mt7621.tar.gz
-  cd /tmp
-  wget http://webd.cf/latest/${pkg}
+  # 安装包名字变量
+  pkg=webd-20211124-openwrt-ramips-mt7620.tar.gz
+  # 下载对应的软件包并解压
   tar -xzvf ${pkg}
   cp -fv webd/webd /usr/bin/
   cp -fv webd/webd.conf /etc/
