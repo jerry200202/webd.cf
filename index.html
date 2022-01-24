@@ -25,7 +25,7 @@ webd 网盘介绍：
   支持 Windows、Linux、OpenWrt、Armbian
   界面简洁易用，无繁琐设置，支持移动设备
 
-<a href='https://gwgw.ga/fidx.html#/webd/'>下载地址 20220110</a>
+<a href='https://gwgw.ga/fidx.html#/webd/'>下载地址 20220124</a>
 
 
 Email: zhngq2312@gmail.com
@@ -59,8 +59,10 @@ Email: zhngq2312@gmail.com
   Webd.Listen 监听端口或特定的地址，支持多个，可配置成 [::]:9212 来同时监听 IPv6 和 IPv4
   Webd.Hide 隐藏托盘图标, 无参数，该项仅支持 Windows
   Webd.User 设置用户的权限、用户名和密码，支持两个用户，但使用同一目录
-    比如 Webd.User rlumS user1 pass1 表示设置 user1 的密码为 pass1 ，具有 r、l、u、m、S 五种权限。
-    其中 r 表示访问文件，l 表示获取文件列表，u 表示上传文件，m 表示删除移动重命名文件，S 表示显示隐藏文件。
+    比如 Webd.User rlumS user1 pass1 表示设置 user1 的密码为 pass1 ，具有 r、l、u、m、S、T 五种权限。
+    其中 r 表示访问文件，l 表示获取文件列表，u 表示上传文件，m 表示删除移动重命名文件，
+         S 表示显示隐藏文件，T 表示使用网页播放媒体文件(可保存播放进度)。
+		 注意需将安装包 web 目录下的 .player.htm 文件放到 Webd.Root 目录下才可使用 T 权限。
     可赋于用户任意单个或多个权限，任意组合，灵活配置。
   Webd.Guest 设置无需登录的访客权限，参考上面的权限组合；设置成 0 表示禁用访客。
   Webd.Browser 用于指定自定义的浏览器路径；该项还能解决双击托盘图标无法弹出界面的问题。
@@ -73,7 +75,7 @@ Email: zhngq2312@gmail.com
   -w Webd.Root
   -g Webd.Guest
   -u 类似 Webd.User, 需把空格用冒号替代, 类似 -u rlum:user1:pass1
-     配置文件和命令行参数一共能设置两个用户
+     配置文件和命令行参数一共能设置三个用户
 
 Linux、OpenWrt、Armbian 等平台上安装 webd
   
